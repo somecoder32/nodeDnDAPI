@@ -1,18 +1,13 @@
 let http = require('http'),
 	express = require('express'),
 	assert = require('assert'),
-	//mongo = require('mongodb'),
 	MongoClient = require('mongodb').MongoClient,
 	path = require('path'),
-    bodyParser = require('body-parser');
-//csv2json = require('./CSV2JSON');
+	bodyParser = require('body-parser');
+	var fs = require("fs");
 
-//var fs = require("fs");
-//var traits = JSON.parse(fs.readFileSync('traits.json', 'utf8'));
-//var spells = JSON.parse(csv2json.createJson('spellfull.csv'));
-//var magicitems = JSON.parse(csv2json.createJson('magic_items_full.csv'));
-//var monsters = JSON.parse(csv2json.createJson('monstersfull.csv')); 
-
+var settings = JSON.parse(fs.readFileSync('settings.json', 'utf8'));
+console.log(settings[0].view);
 var app = express();
 app.set('view engine', 'hbs');
 app.use(bodyParser.json());
@@ -28,8 +23,8 @@ app.all('*', function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'public')));
 
-const editURL = 'mongodb://dndchar:IRoll20@ds036967.mlab.com:36967/dndmain';
-const viewURL = 'mongodb://dndplayer:IRoll20@ds036967.mlab.com:36967/dndmain';
+const editURL = settings[0].view;
+const viewURL = settings[1].edit;
 //var localURL = 'mongodb://localhost:27017/';
 
 app.get('/testhbs',function(req,res){
