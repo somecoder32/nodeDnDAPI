@@ -1,0 +1,51 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <script src="scripts/jquery-3.3.1.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+    <select id="cmbClass">
+        <option value="ranger">Ranger</option>
+        <option value="sor">Sorcerer</option>
+        <option value="wiz">Wizard</option>
+    </select>
+    <div>
+        <ul id="list">
+        
+        </ul>
+    </div>
+    </div>  
+
+    <script>
+        var strClass = "";
+        $(document).ready(function(){ 
+            
+        });
+
+        $('#cmbClass').change(function(){
+            strClass = $('#cmbClass').val();
+            //alert(strClass);
+            getSpells(strClass);
+        });
+
+        function getSpells(classVal){
+            $.ajax({
+                type: "GET",                
+                url: "http://localhost:8081/" + classVal + "/2"
+            }).done(function (data) {
+                var items = $.parseJSON(data);
+                items.sort();
+                $('#list').empty();
+                $.each(items,function(i,j){
+                    $('<li/>',{html: j.name}).appendTo('#list');
+                })
+            });
+        }
+    </script>
+</body>
+
+</html>

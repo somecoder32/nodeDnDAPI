@@ -1,0 +1,52 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <script src="jquery-1.12.2.min.js"></script>
+</head>
+
+<body>
+    <form id="frmInsert">
+        <h2>Character</h2>
+        <input type="text" id="txtName" placeholder="Name" />
+        <input type="text" id="txtClass" placeholder="Class" />
+        <input type="text" id="txtLevel" placeholder="Level" />
+        <input type="submit" id="btnSubmit" value="Submit" />
+    </form>
+
+    <script>
+        var strClass = "";
+        $(document).ready(function(){ 
+            
+        });
+
+        $('#frmInsert').submit(function(){
+            alert('Submit');
+            var dataToSend = {Name: "Thaloss"};
+            $.ajax({
+                type: "POST",                
+                url: "http://localhost:8081/characters",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(dataToSend),
+                success: alert("Success")
+            });
+        });
+
+        function getSpells(classVal){
+            $.ajax({
+                type: "GET",                
+                url: "http://localhost:8081/" + classVal + "/2"
+            }).done(function (data) {
+                var items = $.parseJSON(data);
+                items.sort();
+                $('#list').empty();
+                $.each(items,function(i,j){
+                    $('<li/>',{html: j.name}).appendTo('#list');
+                })
+            });
+        }
+    </script>
+</body>
+
+</html>

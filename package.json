@@ -16,5 +16,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jason",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/somecoder32/nodeDnDAPI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/somecoder32/nodeDnDAPI/issues"
+  },
+  "homepage": "https://github.com/somecoder32/nodeDnDAPI#readme"
 }
