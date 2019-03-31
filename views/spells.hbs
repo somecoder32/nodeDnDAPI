@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script src="/scripts/jquery-3.3.1.min.js"></script>
+    <script src="/scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+
+<body>
+    <main role="main" class="container">
+        <h1 class="mt-5">Spells</h1>        
+        <ul class="list-group">
+            {{#each spells}}<a href="/spell/{{this.name}}/1"><li class="list-group-item list-group-item-action">{{this.name}}</li></a>{{/each}}
+        </ul>
+    </main>
+     
+
+    <script>
+        var strClass = "";
+        $(document).ready(function(){ 
+            
+        });       
+    </script>
+</body>
+
+</html>

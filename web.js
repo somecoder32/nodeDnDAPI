@@ -41,12 +41,10 @@ app.get('/characters', function (req, res) {
 
 				var collection = db.collection("characters");
 				if(req.query.Name)
-				{
-					//var oid = mongo.ObjectID(req.query.Name);
-					collection.find({'Name': req.query.Name }).toArray(function (err, docs) {
+				{					
+					collection.find({'CharName': req.query.Name }).toArray(function (err, docs) {
 					data = JSON.stringify(docs);
-					//callback(docs);
-					//console.log(data);
+					
 					res.render('index',docs[0]);
 				});		
 				}
@@ -77,8 +75,7 @@ app.post('/characters', function(req, res){
 	const data = {"message":"Success"};
 	
 	MongoClient.connect(editURL, function (err, db) {
-		if (!err) {
-			
+		if (!err) {			
 
 			var collection = db.collection("characters");
 
@@ -97,46 +94,75 @@ app.post('/characters', function(req, res){
 	res.end(JSON.stringify(data));
 });
 
-// app.get('/:class/:level', function (req, res) {
-// 	MongoClient.connect("mongodb://localhost:27017/spells", function (err, db) {
-// 		if (!err) {
-// 			//console.log("We are connected");
+app.get('/spells/:class/:level/:html', function (req, res) {
+	MongoClient.connect(viewURL, function (err, db) {
+		if (!err) {
+			console.log("We are connected");
 
-// 			var collection = db.collection("spells");
+			var collection = db.collection("spells");
+			var lvl = parseInt(req.params.level);			
+			var spellList = {spells: []};
+						
+			if (req.params.class === "wiz") {
+				collection.find({ wiz: lvl }, { name: 1, _id:0}).toArray(function (err, docs) {					
+					if(req.params.html==="1"){
+						spellList.spells = docs.sort((a,b) => (a.name > b.name) ? 1 : -1);
+						res.render('spells',spellList);
+					} else {
+						res.end(JSON.stringify(docs));
+					}
+				});
+			}
+			else if (req.params.class === "bard") {
+				collection.find({ bard: lvl }, { name: 1, _id:0 }).toArray(function (err, docs) {
+					res.end(JSON.stringify(docs));
+				});
+			}
+			else if (req.params.class === "cleric") {
+				collection.find({ cleric: lvl }, { name: 1, _id:0 }).toArray(function (err, docs) {
+					res.end(JSON.stringify(docs));
+				});
+			}
+			else if (req.params.class === "sor") {
+				collection.find({ sor: lvl }, { name: 1, _id:0 }).toArray(function (err, docs) {
+					res.end(JSON.stringify(docs));
+				});
+			}
+			else if (req.params.class === "ranger") {
+				collection.find({ ranger: lvl }, { name: 1, _id:0 }).toArray(function (err, docs) {
+					res.end(JSON.stringify(docs));
+				});
+			}
 
-// 			//var classspells = [];
-// 			console.log('Gathering spells');
-// 			if (req.params.class === "wiz") {
-// 				collection.find({ wiz: req.params.level }, { name: 1, _id:0}).toArray(function (err, docs) {
-// 					res.end(JSON.stringify(docs));
-// 				});
-// 			}
-// 			else if (req.params.class === "bard") {
-// 				collection.find({ bard: req.params.level }, { name: 1, _id:0 }).toArray(function (err, docs) {
-// 					res.end(JSON.stringify(docs));
-// 				});
-// 			}
-// 			else if (req.params.class === "cleric") {
-// 				collection.find({ cleric: req.params.level }, { name: 1, _id:0 }).toArray(function (err, docs) {
-// 					res.end(JSON.stringify(docs));
-// 				});
-// 			}
-// 			else if (req.params.class === "sor") {
-// 				collection.find({ sor: req.params.level }, { name: 1, _id:0 }).toArray(function (err, docs) {
-// 					res.end(JSON.stringify(docs));
-// 				});
-// 			}
-// 			else if (req.params.class === "ranger") {
-// 				collection.find({ ranger: req.params.level }, { name: 1, _id:0 }).toArray(function (err, docs) {
-// 					res.end(JSON.stringify(docs));
-// 				});
-// 			}
-
-// 		}
-// 	});
-// });
+		}
+	});
+});
 
 
+	app.get('/spell/:Name/:html', function (req, res) {
+		console.log('request received');
+		MongoClient.connect(viewURL, function (err, db) {
+			if (!err) {
+				var collection = db.collection("spells");
+
+				collection.find({ "name": req.params.Name }, { name: 1, description: 1, _id: 0 }).toArray(function (err, docs) {
+					data = JSON.stringify(docs);
+					//callback(docs);
+					//console.log(data);
+					
+					if(req.params.html === "1"){
+						res.render('spelldetail',docs[0]);
+					}
+					else {
+						res.end(data);
+					}
+					
+				});			
+
+			}
+		});
+
+	});
 
 	// app.get('/:Name', function (req, res) {
 	// 	console.log('request received');
